@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة البيانات | مدرسة متوسطة وثانوية الحفير 2026</title>
+    
+    <!-- الخط الرسمي: Tajawal من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة الأيقونات FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- مكتبة الرسوم البيانية Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --moe-green: #006747;
+            --moe-green-dark: #004d35;
+            --moe-green-light: #008f63;
+            --moe-gold: #C5A059;
+            --moe-gold-light: #e5c17d;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --accent-blue: #2563eb;
+            --accent-purple: #7c3aed;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .pattern-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(var(--moe-green) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.03;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* Header Section */
+        header {
+            background: linear-gradient(135deg, var(--moe-green-dark) 0%, var(--moe-green) 100%);
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 103, 71, 0.2);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--moe-gold);
+            margin-bottom: 30px;
+        }
+
+        .header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .brand-icon {
+            width: 75px;
+            height: 75px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--moe-gold);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .brand-text h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .brand-text p {
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(197, 160, 89, 0.5);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: var(--moe-gold-light);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--moe-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7);
+            animation: pulse 1.6s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--moe-green-dark);
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-right: 4px solid var(--moe-gold);
+            padding-right: 12px;
+        }
+
+        /* Grid Layouts */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .exam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Metric Cards */
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 103, 71, 0.08);
+            border-color: var(--moe-gold);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: rgba(0, 103, 71, 0.08);
+            color: var(--moe-green);
+        }
+
+        .card-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .card-footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Exam Cards Special Design */
+        .exam-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.03);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .exam-card.tahsili {
+            border-top: 5px solid var(--accent-blue);
+        }
+
+        .exam-card.qodrat {
+            border-top: 5px solid var(--accent-purple);
+        }
+
+        .exam-card.nafes {
+            border-top: 5px solid var(--moe-gold);
+            background: linear-gradient(135deg, #ffffff 0%, #fffdfa 100%);
+        }
+
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .exam-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .exam-badge {
+            background: #f1f5f9;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .exam-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .stat-box {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .stat-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .change-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* بطاقة نافس المنتظرة */
+        .nafes-pending-box {
+            background: rgba(197, 160, 89, 0.08);
+            border: 2px dashed var(--moe-gold);
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            margin: auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .nafes-pending-icon {
+            font-size: 2.2rem;
+            color: var(--moe-gold);
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .nafes-pending-text {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--moe-green-dark);
+        }
+
+        /* Charts Layout */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid #e2e8f0;
+        }
+
+        .chart-header {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--moe-green);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 270px;
+            width: 100%;
+        }
+
+        /* Footer Section */
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            padding: 25px 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1350px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .footer-info i {
+            color: var(--moe-green);
+        }
+
+        .credits {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: #f8fafc;
+            padding: 8px 16px;
+            border-radius: 30px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .credits strong {
+            color: var(--moe-green);
+        }
+
+        @media (max-width: 768px) {
+            .exam-grid, .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pattern-bg"></div>
+
+    <div class="container">
+        <!-- الهيدر الرئيسي -->
+        <header>
+            <div class="header-wrapper">
+                <div class="brand-info">
+                    <div class="brand-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>مدرسة متوسطة وثانوية الحفير</h1>
+                        <p><i class="fa-solid fa-landmark"></i> وزارة التعليم - الإدارة العامة للتعليم</p>
+                    </div>
+                </div>
+                <div class="live-badge">
+                    <span class="pulse-dot"></span>
+                    تحديث المؤشرات والنتائج 2026
+                </div>
+            </div>
+        </header>
+
+        <!-- قسم الكادر والخدمات المساندة -->
+        <div class="section-title">
+            <i class="fa-solid fa-users-gear"></i> الكادر التعليمي والإداري والخدمات
+        </div>
+        <div class="metrics-grid">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">المعلمين</span>
+                    <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                </div>
+                <div class="card-value">36</div>
+                <div class="card-footer">رتبة معلم ممارس</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">الهيئة الإدارية</span>
+                    <div class="card-icon"><i class="fa-solid fa-user-tie"></i></div>
+                </div>
+                <div class="card-value">6</div>
+                <div class="card-footer">أعضاء الهيئة الإدارية</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">الإداريين</span>
+                    <div class="card-icon"><i class="fa-solid fa-id-card"></i></div>
+                </div>
+                <div class="card-value">2</div>
+                <div class="card-footer">كادر الدعم الإداري</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">المستخدمين</span>
+                    <div class="card-icon"><i class="fa-solid fa-user-gear"></i></div>
+                </div>
+                <div class="card-value">1</div>
+                <div class="card-footer">الخدمات المساندة</div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">حارس أمن</span>
+                    <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
+                </div>
+                <div class="card-value">1</div>
+                <div class="card-footer">الأمن والسلامة</div>
+            </div>
+        </div>
+
+        <!-- قسم نتائج الاختبارات الوطنية والمركزية (2026) -->
+        <div class="section-title">
+            <i class="fa-solid fa-award"></i> نتائج الاختبارات الوطنية والمركزية (2026)
+        </div>
+        <div class="exam-grid">
+            <!-- الاختبار التحصيلي -->
+            <div class="exam-card tahsili">
+                <div class="exam-header">
+                    <div class="exam-title" style="color: var(--accent-blue);">
+                        <i class="fa-solid fa-file-pen"></i> الاختبار التحصيلي 2026
+                    </div>
+                    <span class="exam-badge">علمي</span>
+                </div>
+                <div class="exam-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">متوسط الدرجات</div>
+                        <div class="stat-value">54.8</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">عدد المختبرين</div>
+                        <div class="stat-value">95</div>
+                    </div>
+                </div>
+                <div class="exam-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">الترتيب على المملكة</div>
+                        <div class="stat-value" style="color: var(--moe-green);">12.27%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">على مستوى إدارة التعليم</div>
+                        <div class="stat-value" style="color: var(--moe-green);">27.27%</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; text-align: left;">
+                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: 0.74%+</span>
+                </div>
+            </div>
+
+            <!-- اختبار القدرات -->
+            <div class="exam-card qodrat">
+                <div class="exam-header">
+                    <div class="exam-title" style="color: var(--accent-purple);">
+                        <i class="fa-solid fa-brain"></i> اختبار القدرات العامة 2026
+                    </div>
+                    <span class="exam-badge">علمي</span>
+                </div>
+                <div class="exam-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">متوسط الدرجات</div>
+                        <div class="stat-value">58.9</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">عدد المختبرين</div>
+                        <div class="stat-value">96</div>
+                    </div>
+                </div>
+                <div class="exam-stats">
+                    <div class="stat-box">
+                        <div class="stat-label">الترتيب على المملكة</div>
+                        <div class="stat-value" style="color: var(--moe-green);">19.66%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">على مستوى إدارة التعليم</div>
+                        <div class="stat-value" style="color: var(--moe-green);">38.64%</div>
+                    </div>
+                </div>
+                <div style="margin-top: 10px; text-align: left;">
+                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: 0.46%+</span>
+                </div>
+            </div>
+
+            <!-- بطاقة اختبارات نافس المنتظرة -->
+            <div class="exam-card nafes">
+                <div class="exam-header">
+                    <div class="exam-title" style="color: var(--moe-gold);">
+                        <i class="fa-solid fa-chart-line"></i> الاختبارات الوطنية (نافس)
+                    </div>
+                    <span class="exam-badge" style="background: rgba(197, 160, 89, 0.15); color: var(--moe-gold);">قريباً</span>
+                </div>
+                <div class="nafes-pending-box">
+                    <i class="fa-solid fa-hourglass-half nafes-pending-icon"></i>
+                    <div class="nafes-pending-text">بإنتظار إضافة نتيجة نافس قريــباً</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم البيانيات الإحصائية -->
+        <div class="section-title">
+            <i class="fa-solid fa-chart-line"></i> التحليل البياني للتقويم والاختبارات
+        </div>
+        <div class="charts-grid">
+            <!-- الرسم البياني لاختبارات قياس -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <i class="fa-solid fa-chart-simple"></i> مقارنة نتائج التحصيلي والقدرات (2026)
+                </div>
+                <div class="chart-container">
+                    <canvas id="qiyasChart"></canvas>
+                </div>
+            </div>
+
+            <!-- التقويم المدرسي للمرحلتين -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <i class="fa-solid fa-chart-column"></i> التقويم المدرسي (2024 - 2025)
+                </div>
+                <div class="chart-container">
+                    <canvas id="evaluationBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الفوتر والتوقيع -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>مدير المدرسة: <strong>أ. عياد بن خالد الشمري</strong></span>
+            </div>
+            <div class="credits">
+                فكرة وبرمجة وتصميم: <strong>أ. سلطان العقلاء</strong>
+            </div>
+        </div>
+    </footer>
+
+    <!-- إعدادات الرسم البياني Tفنون وتفاعلية -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Chart.defaults.font.family = 'Tajawal';
+
+            // 1. Chart: مقارنة نتائج التحصيلي والقدرات
+            const ctxQiyas = document.getElementById('qiyasChart').getContext('2d');
+            new Chart(ctxQiyas, {
+                type: 'bar',
+                data: {
+                    labels: ['التحصيلي (علمي)', 'القدرات (علمي)'],
+                    datasets: [
+                        {
+                            label: 'متوسط الدرجات',
+                            data: [54.8, 58.9],
+                            backgroundColor: ['#2563eb', '#7c3aed'],
+                            borderRadius: 8,
+                            barThickness: 35
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { callback: function(v) { return v + ' درجة'; } },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) { return ` المتوسط: ${context.raw} درجة`; }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Chart: التقويم المدرسي
+            const ctxEval = document.getElementById('evaluationBarChart').getContext('2d');
+            new Chart(ctxEval, {
+                type: 'bar',
+                data: {
+                    labels: ['المرحلة المتوسطة', 'المرحلة الثانوية'],
+                    datasets: [
+                        {
+                            label: 'عام 2024',
+                            data: [57, 76],
+                            backgroundColor: '#94a3b8',
+                            borderRadius: 8,
+                            barThickness: 28
+                        },
+                        {
+                            label: 'عام 2025',
+                            data: [80, 75],
+                            backgroundColor: '#006747',
+                            borderRadius: 8,
+                            barThickness: 28
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { callback: function(value) { return value + '%'; } },
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: { grid: { display: false } }
+                    },
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
