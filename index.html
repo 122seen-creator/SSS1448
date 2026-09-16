@@ -34,7 +34,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Tajawal', sans-serif;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
         body {
@@ -66,6 +66,42 @@
             flex: 1;
         }
 
+        /* Keyframe Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+
+        @keyframes rotateHourglass {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(180deg); }
+            100% { transform: rotate(180deg); }
+        }
+
+        /* Dynamic Scroll Reveal Class */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* Header Section */
         header {
             background: linear-gradient(135deg, var(--moe-green-dark) 0%, var(--moe-green) 100%);
@@ -77,6 +113,7 @@
             overflow: hidden;
             border-bottom: 5px solid var(--moe-gold);
             margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .header-wrapper {
@@ -141,14 +178,7 @@
             height: 8px;
             background-color: var(--moe-gold);
             border-radius: 50%;
-            box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7);
             animation: pulse 1.6s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
         }
 
         /* Section Titles */
@@ -190,7 +220,7 @@
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
             box-shadow: 0 15px 30px rgba(0, 103, 71, 0.08);
             border-color: var(--moe-gold);
         }
@@ -244,6 +274,11 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+        }
+
+        .exam-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
         }
 
         .exam-card.tahsili {
@@ -320,7 +355,7 @@
             border-radius: 6px;
         }
 
-        /* بطاقة نافس المنتظرة */
+        /* بطاقة نافس المنتظرة والتفاعلية */
         .nafes-pending-box {
             background: rgba(197, 160, 89, 0.08);
             border: 2px dashed var(--moe-gold);
@@ -338,13 +373,7 @@
         .nafes-pending-icon {
             font-size: 2.2rem;
             color: var(--moe-gold);
-            animation: float 2.5s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
+            animation: rotateHourglass 4s ease-in-out infinite;
         }
 
         .nafes-pending-text {
@@ -461,63 +490,63 @@
         </header>
 
         <!-- قسم الكادر والخدمات المساندة -->
-        <div class="section-title">
+        <div class="section-title reveal">
             <i class="fa-solid fa-users-gear"></i> الكادر التعليمي والإداري والخدمات
         </div>
         <div class="metrics-grid">
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-header">
                     <span class="card-title">المعلمين</span>
                     <div class="card-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                 </div>
-                <div class="card-value">36</div>
+                <div class="card-value counter" data-target="36" data-decimals="0">0</div>
                 <div class="card-footer">رتبة معلم ممارس</div>
             </div>
 
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-header">
                     <span class="card-title">الهيئة الإدارية</span>
                     <div class="card-icon"><i class="fa-solid fa-user-tie"></i></div>
                 </div>
-                <div class="card-value">6</div>
+                <div class="card-value counter" data-target="6" data-decimals="0">0</div>
                 <div class="card-footer">أعضاء الهيئة الإدارية</div>
             </div>
 
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-header">
                     <span class="card-title">الإداريين</span>
                     <div class="card-icon"><i class="fa-solid fa-id-card"></i></div>
                 </div>
-                <div class="card-value">2</div>
+                <div class="card-value counter" data-target="2" data-decimals="0">0</div>
                 <div class="card-footer">كادر الدعم الإداري</div>
             </div>
 
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-header">
                     <span class="card-title">المستخدمين</span>
                     <div class="card-icon"><i class="fa-solid fa-user-gear"></i></div>
                 </div>
-                <div class="card-value">1</div>
+                <div class="card-value counter" data-target="1" data-decimals="0">0</div>
                 <div class="card-footer">الخدمات المساندة</div>
             </div>
 
-            <div class="card">
+            <div class="card reveal">
                 <div class="card-header">
                     <span class="card-title">حارس أمن</span>
                     <div class="card-icon"><i class="fa-solid fa-user-shield"></i></div>
                 </div>
-                <div class="card-value">1</div>
+                <div class="card-value counter" data-target="1" data-decimals="0">0</div>
                 <div class="card-footer">الأمن والسلامة</div>
             </div>
         </div>
 
         <!-- قسم نتائج الاختبارات الوطنية والمركزية (2026) -->
-        <div class="section-title">
+        <div class="section-title reveal">
             <i class="fa-solid fa-award"></i> نتائج الاختبارات الوطنية والمركزية (2026)
         </div>
         <div class="exam-grid">
             <!-- الاختبار التحصيلي -->
-            <div class="exam-card tahsili">
+            <div class="exam-card tahsili reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--accent-blue);">
                         <i class="fa-solid fa-file-pen"></i> الاختبار التحصيلي 2026
@@ -527,30 +556,30 @@
                 <div class="exam-stats">
                     <div class="stat-box">
                         <div class="stat-label">متوسط الدرجات</div>
-                        <div class="stat-value">54.8</div>
+                        <div class="stat-value counter" data-target="54.8" data-decimals="1">0</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">عدد المختبرين</div>
-                        <div class="stat-value">95</div>
+                        <div class="stat-value counter" data-target="95" data-decimals="0">0</div>
                     </div>
                 </div>
                 <div class="exam-stats">
                     <div class="stat-box">
                         <div class="stat-label">الترتيب على المملكة</div>
-                        <div class="stat-value" style="color: var(--moe-green);">12.27%</div>
+                        <div class="stat-value"><span class="counter" data-target="12.27" data-decimals="2">0</span>%</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">على مستوى إدارة التعليم</div>
-                        <div class="stat-value" style="color: var(--moe-green);">27.27%</div>
+                        <div class="stat-value"><span class="counter" data-target="27.27" data-decimals="2">0</span>%</div>
                     </div>
                 </div>
                 <div style="margin-top: 10px; text-align: left;">
-                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: 0.74%+</span>
+                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: +<span class="counter" data-target="0.74" data-decimals="2">0</span>%</span>
                 </div>
             </div>
 
             <!-- اختبار القدرات -->
-            <div class="exam-card qodrat">
+            <div class="exam-card qodrat reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--accent-purple);">
                         <i class="fa-solid fa-brain"></i> اختبار القدرات العامة 2026
@@ -560,30 +589,30 @@
                 <div class="exam-stats">
                     <div class="stat-box">
                         <div class="stat-label">متوسط الدرجات</div>
-                        <div class="stat-value">58.9</div>
+                        <div class="stat-value counter" data-target="58.9" data-decimals="1">0</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">عدد المختبرين</div>
-                        <div class="stat-value">96</div>
+                        <div class="stat-value counter" data-target="96" data-decimals="0">0</div>
                     </div>
                 </div>
                 <div class="exam-stats">
                     <div class="stat-box">
                         <div class="stat-label">الترتيب على المملكة</div>
-                        <div class="stat-value" style="color: var(--moe-green);">19.66%</div>
+                        <div class="stat-value"><span class="counter" data-target="19.66" data-decimals="2">0</span>%</div>
                     </div>
                     <div class="stat-box">
                         <div class="stat-label">على مستوى إدارة التعليم</div>
-                        <div class="stat-value" style="color: var(--moe-green);">38.64%</div>
+                        <div class="stat-value"><span class="counter" data-target="38.64" data-decimals="2">0</span>%</div>
                     </div>
                 </div>
                 <div style="margin-top: 10px; text-align: left;">
-                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: 0.46%+</span>
+                    <span class="change-tag"><i class="fa-solid fa-arrow-trend-up"></i> مقدار التغيير: +<span class="counter" data-target="0.46" data-decimals="2">0</span>%</span>
                 </div>
             </div>
 
             <!-- بطاقة اختبارات نافس المنتظرة -->
-            <div class="exam-card nafes">
+            <div class="exam-card nafes reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--moe-gold);">
                         <i class="fa-solid fa-chart-line"></i> الاختبارات الوطنية (نافس)
@@ -598,12 +627,12 @@
         </div>
 
         <!-- قسم البيانيات الإحصائية -->
-        <div class="section-title">
+        <div class="section-title reveal">
             <i class="fa-solid fa-chart-line"></i> التحليل البياني للتقويم والاختبارات
         </div>
         <div class="charts-grid">
             <!-- الرسم البياني لاختبارات قياس -->
-            <div class="chart-card">
+            <div class="chart-card reveal">
                 <div class="chart-header">
                     <i class="fa-solid fa-chart-simple"></i> مقارنة نتائج التحصيلي والقدرات (2026)
                 </div>
@@ -613,7 +642,7 @@
             </div>
 
             <!-- التقويم المدرسي للمرحلتين -->
-            <div class="chart-card">
+            <div class="chart-card reveal">
                 <div class="chart-header">
                     <i class="fa-solid fa-chart-column"></i> التقويم المدرسي (2024 - 2025)
                 </div>
@@ -637,12 +666,61 @@
         </div>
     </footer>
 
-    <!-- إعدادات الرسم البياني Tفنون وتفاعلية -->
+    <!-- السكريبت التفاعلي لعداد الأرقام والحركات -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             Chart.defaults.font.family = 'Tajawal';
 
-            // 1. Chart: مقارنة نتائج التحصيلي والقدرات
+            // 1. إعداد العداد الحيوي للأرقام (Count-Up Animation)
+            function animateCounters() {
+                const counters = document.querySelectorAll('.counter');
+                const speed = 60; // سرعة الحركة
+
+                counters.forEach(counter => {
+                    if (counter.classList.contains('counted')) return;
+                    
+                    const target = +counter.getAttribute('data-target');
+                    const decimals = +counter.getAttribute('data-decimals') || 0;
+                    let count = 0;
+                    const inc = target / speed;
+
+                    const updateCount = () => {
+                        count += inc;
+                        if (count < target) {
+                            counter.innerText = count.toFixed(decimals);
+                            setTimeout(updateCount, 25);
+                        } else {
+                            counter.innerText = target.toFixed(decimals);
+                            counter.classList.add('counted');
+                        }
+                    };
+                    updateCount();
+                });
+            }
+
+            // 2. إعداد مراقب التمرير ظهور العناصر (Scroll Reveal)
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                revealElements.forEach((el, index) => {
+                    const elementTop = el.getBoundingClientRect().top;
+                    const elementVisible = 80;
+
+                    if (elementTop < windowHeight - elementVisible) {
+                        setTimeout(() => {
+                            el.classList.add('active');
+                            // تشغيل العدادات عند إتاحة العنصر
+                            animateCounters();
+                        }, (index % 4) * 100); // تأثير تتابع الظهور Staggered
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll(); // تشغيله فور التحميل للأجزاء العلوية
+
+            // 3. الرسم البياني لاختبارات قياس
             const ctxQiyas = document.getElementById('qiyasChart').getContext('2d');
             new Chart(ctxQiyas, {
                 type: 'bar',
@@ -661,6 +739,10 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -681,7 +763,7 @@
                 }
             });
 
-            // 2. Chart: التقويم المدرسي
+            // 4. الرسم البياني للتقويم المدرسي
             const ctxEval = document.getElementById('evaluationBarChart').getContext('2d');
             new Chart(ctxEval, {
                 type: 'bar',
@@ -707,6 +789,10 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    animation: {
+                        duration: 2200,
+                        easing: 'easeOutQuart'
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
