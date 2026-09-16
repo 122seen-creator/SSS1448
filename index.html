@@ -11,8 +11,9 @@
     <!-- مكتبة الأيقونات FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- مكتبة الرسوم البيانية Chart.js -->
+    <!-- مكتبة الرسوم البيانية Chart.js ومكتبة إظهار القيم DataLabels -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
     <style>
         :root {
@@ -66,7 +67,7 @@
             flex: 1;
         }
 
-        /* Keyframe Animations */
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -90,7 +91,6 @@
             100% { transform: rotate(180deg); }
         }
 
-        /* Dynamic Scroll Reveal Class */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -102,7 +102,7 @@
             transform: translateY(0);
         }
 
-        /* Header Section */
+        /* Header */
         header {
             background: linear-gradient(135deg, var(--moe-green-dark) 0%, var(--moe-green) 100%);
             color: #ffffff;
@@ -181,7 +181,6 @@
             animation: pulse 1.6s infinite;
         }
 
-        /* Section Titles */
         .section-title {
             font-size: 1.3rem;
             font-weight: 800;
@@ -194,7 +193,6 @@
             padding-right: 12px;
         }
 
-        /* Grid Layouts */
         .metrics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -209,7 +207,6 @@
             margin-bottom: 30px;
         }
 
-        /* Metric Cards */
         .card {
             background: var(--card-bg);
             border-radius: 18px;
@@ -263,7 +260,6 @@
             color: var(--text-muted);
         }
 
-        /* Exam Cards Special Design */
         .exam-card {
             background: var(--card-bg);
             border-radius: 20px;
@@ -281,14 +277,8 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06);
         }
 
-        .exam-card.tahsili {
-            border-top: 5px solid var(--accent-blue);
-        }
-
-        .exam-card.qodrat {
-            border-top: 5px solid var(--accent-purple);
-        }
-
+        .exam-card.tahsili { border-top: 5px solid var(--accent-blue); }
+        .exam-card.qodrat { border-top: 5px solid var(--accent-purple); }
         .exam-card.nafes {
             border-top: 5px solid var(--moe-gold);
             background: linear-gradient(135deg, #ffffff 0%, #fffdfa 100%);
@@ -355,7 +345,6 @@
             border-radius: 6px;
         }
 
-        /* بطاقة نافس المنتظرة والتفاعلية */
         .nafes-pending-box {
             background: rgba(197, 160, 89, 0.08);
             border: 2px dashed var(--moe-gold);
@@ -396,6 +385,12 @@
             padding: 25px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
             border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            box-shadow: 0 15px 35px rgba(0, 103, 71, 0.08);
+            border-color: rgba(0, 103, 71, 0.2);
         }
 
         .chart-header {
@@ -410,11 +405,11 @@
 
         .chart-container {
             position: relative;
-            height: 270px;
+            height: 290px;
             width: 100%;
         }
 
-        /* Footer Section */
+        /* Footer */
         footer {
             background: #ffffff;
             border-top: 1px solid #e2e8f0;
@@ -441,9 +436,7 @@
             font-weight: 700;
         }
 
-        .footer-info i {
-            color: var(--moe-green);
-        }
+        .footer-info i { color: var(--moe-green); }
 
         .credits {
             font-size: 0.9rem;
@@ -454,9 +447,7 @@
             border: 1px solid #e2e8f0;
         }
 
-        .credits strong {
-            color: var(--moe-green);
-        }
+        .credits strong { color: var(--moe-green); }
 
         @media (max-width: 768px) {
             .exam-grid, .charts-grid {
@@ -470,7 +461,7 @@
     <div class="pattern-bg"></div>
 
     <div class="container">
-        <!-- الهيدر الرئيسي -->
+        <!-- Header -->
         <header>
             <div class="header-wrapper">
                 <div class="brand-info">
@@ -489,7 +480,7 @@
             </div>
         </header>
 
-        <!-- قسم الكادر والخدمات المساندة -->
+        <!-- الكادر والخدمات -->
         <div class="section-title reveal">
             <i class="fa-solid fa-users-gear"></i> الكادر التعليمي والإداري والخدمات
         </div>
@@ -540,12 +531,12 @@
             </div>
         </div>
 
-        <!-- قسم نتائج الاختبارات الوطنية والمركزية (2026) -->
+        <!-- الاختبارات الوطنية والمركزية -->
         <div class="section-title reveal">
             <i class="fa-solid fa-award"></i> نتائج الاختبارات الوطنية والمركزية (2026)
         </div>
         <div class="exam-grid">
-            <!-- الاختبار التحصيلي -->
+            <!-- التحصيلي -->
             <div class="exam-card tahsili reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--accent-blue);">
@@ -578,7 +569,7 @@
                 </div>
             </div>
 
-            <!-- اختبار القدرات -->
+            <!-- القدرات -->
             <div class="exam-card qodrat reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--accent-purple);">
@@ -611,7 +602,7 @@
                 </div>
             </div>
 
-            <!-- بطاقة اختبارات نافس المنتظرة -->
+            <!-- بطاقة نافس المنتظرة -->
             <div class="exam-card nafes reveal">
                 <div class="exam-header">
                     <div class="exam-title" style="color: var(--moe-gold);">
@@ -626,12 +617,11 @@
             </div>
         </div>
 
-        <!-- قسم البيانيات الإحصائية -->
+        <!-- قسم البيانيات الإحصائية التفاعلية -->
         <div class="section-title reveal">
             <i class="fa-solid fa-chart-line"></i> التحليل البياني للتقويم والاختبارات
         </div>
         <div class="charts-grid">
-            <!-- الرسم البياني لاختبارات قياس -->
             <div class="chart-card reveal">
                 <div class="chart-header">
                     <i class="fa-solid fa-chart-simple"></i> مقارنة نتائج التحصيلي والقدرات (2026)
@@ -641,7 +631,6 @@
                 </div>
             </div>
 
-            <!-- التقويم المدرسي للمرحلتين -->
             <div class="chart-card reveal">
                 <div class="chart-header">
                     <i class="fa-solid fa-chart-column"></i> التقويم المدرسي (2024 - 2025)
@@ -653,7 +642,7 @@
         </div>
     </div>
 
-    <!-- الفوتر والتوقيع -->
+    <!-- الفوتر -->
     <footer>
         <div class="footer-content">
             <div class="footer-info">
@@ -666,15 +655,17 @@
         </div>
     </footer>
 
-    <!-- السكريبت التفاعلي لعداد الأرقام والحركات -->
+    <!-- JS الحركات والتفاعل المطور للرسوم البيانية -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            // تسجيل إضافة أرقام البيانات فوق الأعمدة
+            Chart.register(ChartDataLabels);
             Chart.defaults.font.family = 'Tajawal';
 
-            // 1. إعداد العداد الحيوي للأرقام (Count-Up Animation)
+            // 1. عداد الأرقام الحيوي (Count-Up)
             function animateCounters() {
                 const counters = document.querySelectorAll('.counter');
-                const speed = 60; // سرعة الحركة
+                const speed = 50;
 
                 counters.forEach(counter => {
                     if (counter.classList.contains('counted')) return;
@@ -698,115 +689,195 @@
                 });
             }
 
-            // 2. إعداد مراقب التمرير ظهور العناصر (Scroll Reveal)
+            // 2. مراقب التمرير والظهور التدريجي
+            let chartsInitialized = false;
             const revealElements = document.querySelectorAll('.reveal');
             
             const revealOnScroll = () => {
                 const windowHeight = window.innerHeight;
                 revealElements.forEach((el, index) => {
                     const elementTop = el.getBoundingClientRect().top;
-                    const elementVisible = 80;
-
-                    if (elementTop < windowHeight - elementVisible) {
+                    if (elementTop < windowHeight - 80) {
                         setTimeout(() => {
                             el.classList.add('active');
-                            // تشغيل العدادات عند إتاحة العنصر
                             animateCounters();
-                        }, (index % 4) * 100); // تأثير تتابع الظهور Staggered
+                        }, (index % 4) * 100);
                     }
                 });
+
+                if (!chartsInitialized) {
+                    initCharts();
+                    chartsInitialized = true;
+                }
             };
 
             window.addEventListener('scroll', revealOnScroll);
-            revealOnScroll(); // تشغيله فور التحميل للأجزاء العلوية
+            revealOnScroll();
 
-            // 3. الرسم البياني لاختبارات قياس
-            const ctxQiyas = document.getElementById('qiyasChart').getContext('2d');
-            new Chart(ctxQiyas, {
-                type: 'bar',
-                data: {
-                    labels: ['التحصيلي (علمي)', 'القدرات (علمي)'],
-                    datasets: [
-                        {
+            // 3. بناء الرسوم البيانية التفاعلية
+            function initCharts() {
+                // ---- الرسم البياني 1: التحصيلي والقدرات ----
+                const ctxQiyas = document.getElementById('qiyasChart').getContext('2d');
+                
+                // إنشاء ألوان متدرجة للأعمدة
+                const gradBlue = ctxQiyas.createLinearGradient(0, 0, 0, 300);
+                gradBlue.addColorStop(0, '#3b82f6');
+                gradBlue.addColorStop(1, '#1d4ed8');
+
+                const gradPurple = ctxQiyas.createLinearGradient(0, 0, 0, 300);
+                gradPurple.addColorStop(0, '#a855f7');
+                gradPurple.addColorStop(1, '#6b21a8');
+
+                new Chart(ctxQiyas, {
+                    type: 'bar',
+                    data: {
+                        labels: ['التحصيلي (علمي)', 'القدرات (علمي)'],
+                        datasets: [{
                             label: 'متوسط الدرجات',
                             data: [54.8, 58.9],
-                            backgroundColor: ['#2563eb', '#7c3aed'],
-                            borderRadius: 8,
-                            barThickness: 35
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 2000,
-                        easing: 'easeOutQuart'
+                            backgroundColor: [gradBlue, gradPurple],
+                            borderRadius: 12,
+                            borderSkipped: false,
+                            barThickness: 45,
+                            hoverBackgroundColor: ['#2563eb', '#7c3aed']
+                        }]
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: { callback: function(v) { return v + ' درجة'; } },
-                            grid: { color: '#f1f5f9' }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 2000,
+                            easing: 'easeOutBounce'
                         },
-                        x: { grid: { display: false } }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) { return ` المتوسط: ${context.raw} درجة`; }
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: v => v + ' درجة',
+                                    font: { weight: 'bold' }
+                                },
+                                grid: { color: 'rgba(226, 232, 240, 0.6)' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { weight: '800', size: 13 } }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'start',
+                                offset: -30,
+                                color: '#ffffff',
+                                font: { weight: 'bold', size: 14 },
+                                formatter: (val) => val + ' درجة'
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 13 },
+                                padding: 12,
+                                cornerRadius: 10,
+                                displayColors: false,
+                                callbacks: {
+                                    label: (ctx) => ` المتوسط: ${ctx.raw} درجة من 100`
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
 
-            // 4. الرسم البياني للتقويم المدرسي
-            const ctxEval = document.getElementById('evaluationBarChart').getContext('2d');
-            new Chart(ctxEval, {
-                type: 'bar',
-                data: {
-                    labels: ['المرحلة المتوسطة', 'المرحلة الثانوية'],
-                    datasets: [
-                        {
-                            label: 'عام 2024',
-                            data: [57, 76],
-                            backgroundColor: '#94a3b8',
-                            borderRadius: 8,
-                            barThickness: 28
+                // ---- الرسم البياني 2: التقويم المدرسي ----
+                const ctxEval = document.getElementById('evaluationBarChart').getContext('2d');
+                
+                const gradGray = ctxEval.createLinearGradient(0, 0, 0, 300);
+                gradGray.addColorStop(0, '#cbd5e1');
+                gradGray.addColorStop(1, '#64748b');
+
+                const gradGreen = ctxEval.createLinearGradient(0, 0, 0, 300);
+                gradGreen.addColorStop(0, '#008f63');
+                gradGreen.addColorStop(1, '#004d35');
+
+                new Chart(ctxEval, {
+                    type: 'bar',
+                    data: {
+                        labels: ['المرحلة المتوسطة', 'المرحلة الثانوية'],
+                        datasets: [
+                            {
+                                label: 'عام 2024',
+                                data: [57, 76],
+                                backgroundColor: gradGray,
+                                borderRadius: 10,
+                                barThickness: 32
+                            },
+                            {
+                                label: 'عام 2025',
+                                data: [80, 75],
+                                backgroundColor: gradGreen,
+                                borderRadius: 10,
+                                barThickness: 32
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 2200,
+                            easing: 'easeInOutElastic'
                         },
-                        {
-                            label: 'عام 2025',
-                            data: [80, 75],
-                            backgroundColor: '#006747',
-                            borderRadius: 8,
-                            barThickness: 28
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: v => v + '%',
+                                    font: { weight: 'bold' }
+                                },
+                                grid: { color: 'rgba(226, 232, 240, 0.6)' }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { weight: '800', size: 13 } }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: { font: { weight: 'bold', size: 12 }, usePointStyle: true }
+                            },
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'top',
+                                offset: 2,
+                                color: '#1e293b',
+                                font: { weight: 'bold', size: 12 },
+                                formatter: (val) => val + '%'
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                                titleFont: { size: 14, weight: 'bold' },
+                                bodyFont: { size: 13 },
+                                padding: 12,
+                                cornerRadius: 10,
+                                callbacks: {
+                                    label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw}%`
+                                }
+                            }
                         }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 2200,
-                        easing: 'easeOutQuart'
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            ticks: { callback: function(value) { return value + '%'; } },
-                            grid: { color: '#f1f5f9' }
-                        },
-                        x: { grid: { display: false } }
-                    },
-                    plugins: {
-                        legend: { position: 'top' }
                     }
-                }
-            });
+                });
+            }
         });
     </script>
 </body>
